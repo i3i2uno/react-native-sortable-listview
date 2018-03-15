@@ -1,7 +1,6 @@
 import ReactDom, { findDOMNode } from 'react-dom'
 import React, { Component } from 'react'
 import { View, StyleSheet, Text, TouchableHighlight } from 'react-native'
-import Styles from 'config/style'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import { SortableContainer, SortableElement, arrayMove } from 'react-sortable-hoc';
 
