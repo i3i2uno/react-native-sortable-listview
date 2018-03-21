@@ -7,6 +7,7 @@ import {
   PanResponder,
   LayoutAnimation,
   InteractionManager,
+  RefreshControl
 } from 'react-native'
 
 const HEIGHT = Dimensions.get('window').height
@@ -157,6 +158,7 @@ class SortableListView extends React.Component {
       }),
       active: false,
       hovering: false,
+      refreshing: false,
       pan: new Animated.ValueXY(currentPanValue),
     }
     this.listener = this.state.pan.addListener(e => (this.panY = e.y))
@@ -473,6 +475,17 @@ class SortableListView extends React.Component {
     this.order = props.order || Object.keys(props.data) || []
   }
 
+  _onRefresh(runMethod) {
+    var self = this;
+    self.setState({ refreshing: true });
+    if (this.props.onRefresh && (runMethod === undefined || runMethod)) {
+      this.props.onRefresh(function () {
+        self.setState({ refreshing: false });
+      })
+    } else {
+      self.setState({ refreshing: false });
+    }
+  }
   render() {
     const dataSource = this.state.ds.cloneWithRows(
       this.props.data,
@@ -490,6 +503,14 @@ class SortableListView extends React.Component {
           {...this.props}
           {...this.state.panResponder.panHandlers}
           ref="list"
+          refreshControl={this.props.onRefresh ?
+            <RefreshControl
+              colors={[this.props.tintColor || svars.color.highlight]}
+              tintColor={this.props.tintColor || svars.color.highlight}
+              enabled={!this.state.active && this.props.onRefresh ? true : false}
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh.bind(this)}
+            /> : null}
           dataSource={dataSource}
           onScroll={this.handleScroll}
           onContentSizeChange={this.handleContentSizeChange}
