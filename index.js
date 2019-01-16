@@ -104,8 +104,8 @@ class Row extends React.Component {
 class SortRow extends React.Component {
   constructor(props) {
     super(props)
-    const layout = props.list.state.active.layout
-    const wrapperLayout = props.list.wrapperLayout
+    const layout = props.list.state.active.layout || { pageY: 0 };
+    const wrapperLayout = props.list.wrapperLayout || { pageY: 0 };
 
     this.state = {
       style: {
@@ -446,7 +446,7 @@ class SortableListView extends React.Component {
   renderActive = () => {
     if (!this.state.active) return
     const index = this.state.active.rowData.index
-    return this.renderRow(this.props.data[index], 's1', index, () => {}, {
+    return this.renderRow(this.props.data[index], 's1', index, () => { }, {
       active: true,
       thumb: true,
     })
