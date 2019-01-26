@@ -307,7 +307,7 @@ class SortableListView extends React.Component {
   }
 
   scrollAnimation = () => {
-    if (this.state.active) {
+    if (this.state.active && this.wrapperLayout && this.listLayout) {
       if (this.moveY === undefined) {
         return requestAnimationFrame(this.scrollAnimation)
       }
